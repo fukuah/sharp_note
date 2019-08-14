@@ -4,11 +4,5 @@
         <name>SharpNote</name>
     </assembly>
     <members>
-        <member name="M:SharpNote.Controllers.ValuesController.Get">
-            <summary>
-            Swagger doc test
-            </summary>
-            <returns>An array of values</returns>
-        </member>
     </members>
 </doc>
