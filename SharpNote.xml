@@ -4,5 +4,12 @@
         <name>SharpNote</name>
     </assembly>
     <members>
+        <member name="M:SharpNote.Controllers.NoteController.AddNote(SharpNote.AppDbContext.Entities.Note)">
+            <summary>
+            Store new note
+            </summary>
+            <param name="note">Note entity</param>
+            <returns>Note object which was added</returns>
+        </member>
     </members>
 </doc>
