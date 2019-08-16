@@ -4,12 +4,33 @@
         <name>SharpNote</name>
     </assembly>
     <members>
-        <member name="M:SharpNote.Controllers.NoteController.AddNote(SharpNote.AppDbContext.Entities.Note)">
+        <member name="M:SharpNote.Controllers.NoteController.Get(System.Int32)">
             <summary>
-            Store new note
+            Gets note by ID.
             </summary>
-            <param name="note">Note entity</param>
-            <returns>Note object which was added</returns>
+            <param name="id">ID of the note to be sent.</param>
+            <returns>Note object.</returns>
+        </member>
+        <member name="M:SharpNote.Controllers.NoteController.Add(SharpNote.AppDbContext.Entities.Note)">
+            <summary>
+            Store new note.
+            </summary>
+            <param name="note">Note entity.</param>
+            <returns>Note object which was added.</returns>
+        </member>
+        <member name="M:SharpNote.Controllers.NoteController.Update(SharpNote.AppDbContext.Entities.Note)">
+            <summary>
+            Updates existing note.
+            </summary>
+            <param name="note">Note entity.</param>
+            <returns>Note object to be updated, id is required.</returns>
+        </member>
+        <member name="M:SharpNote.Controllers.NoteController.Delete(System.Int32)">
+            <summary>
+            Deletes note by ID
+            </summary>
+            <param name="id">ID of the note to be deleted.</param>
+            <returns>String message.</returns>
         </member>
     </members>
 </doc>

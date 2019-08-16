@@ -9,12 +9,23 @@ namespace SharpNote.ApiResponseHelpers
 
     public class ApiResponse<T> : ApiResponse
     {
-        public T body { get; }
-        public ApiError error { get; }
+        public T Body { get; }
+        public ApiError Error { get; }
 
         public ApiResponse(T bdata)
         {
-            body = bdata;
+            Body = bdata;
+        }
+
+        public ApiResponse(T bdata, ApiError e)
+        {
+            Body = bdata;
+            Error = e;
+        }
+
+        public ApiResponse(ApiError e)
+        {
+            Error = e;
         }
     }
 }
