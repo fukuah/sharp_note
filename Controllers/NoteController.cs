@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharpNote.ApiResponseHelpers;
-using SharpNote.AppDbContext.Entities;
+using SharpNote.ViewModels;
+using SharpNote.Services;
 using SharpNote.UOW;
 
 namespace SharpNote.Controllers
@@ -14,11 +15,11 @@ namespace SharpNote.Controllers
     [ApiController]
     public class NoteController : ControllerBase
     {
-        private UnitOfWork _unitOfWork;
+        private readonly INoteService _noteService;
 
-        public NoteController ()
+        public NoteController (INoteService service)
         {
-            _unitOfWork = new UnitOfWork();
+            _noteService = service;
         }
 
         /// <summary>
@@ -29,14 +30,9 @@ namespace SharpNote.Controllers
         [HttpGet("{id}")]
         public ApiResponse Get(int id)
         {
-            try { 
-                Note note = _unitOfWork.Notes.Get(id);
-                return new ApiResponse<Note>(note);
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse<string>("Server exception has occured performing request.", new ApiError(e));
-            }
+            
+            Note note = _noteService.GetOne(id);
+            return new ApiResponse<Note>(note);
         }
 
         /// <summary>
@@ -49,8 +45,8 @@ namespace SharpNote.Controllers
         {
             try
             {
-                
-                _unitOfWork.Notes.Create(note);
+
+                _noteService.Create(note);
             }
             catch (Exception e)
             {
@@ -70,7 +66,7 @@ namespace SharpNote.Controllers
         {
             try
             {
-                _unitOfWork.Notes.Update(note);
+                _noteService.Update(note);
                 return new ApiResponse<Note>(note);
             }
             catch (Exception e)
@@ -89,7 +85,7 @@ namespace SharpNote.Controllers
         {
             try
             {
-                _unitOfWork.Notes.Delete(id);
+                _noteService.Delete(id);
                 return new ApiResponse<string>("Note[" + id + "] was deleted.");
             }
             catch (Exception e)

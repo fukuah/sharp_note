@@ -19,5 +19,8 @@ namespace SharpNote.AppDbContext.Entities
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+        public DateTime? AppearAt { get; set; }
+        public DateTime? ExpireAt { get; set; }
     }
 }

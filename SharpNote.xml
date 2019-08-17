@@ -11,14 +11,14 @@
             <param name="id">ID of the note to be sent.</param>
             <returns>Note object.</returns>
         </member>
-        <member name="M:SharpNote.Controllers.NoteController.Add(SharpNote.AppDbContext.Entities.Note)">
+        <member name="M:SharpNote.Controllers.NoteController.Add(SharpNote.ViewModels.Note)">
             <summary>
             Store new note.
             </summary>
             <param name="note">Note entity.</param>
             <returns>Note object which was added.</returns>
         </member>
-        <member name="M:SharpNote.Controllers.NoteController.Update(SharpNote.AppDbContext.Entities.Note)">
+        <member name="M:SharpNote.Controllers.NoteController.Update(SharpNote.ViewModels.Note)">
             <summary>
             Updates existing note.
             </summary>

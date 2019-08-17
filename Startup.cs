@@ -14,6 +14,7 @@ using Autofac;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.IO;
+using SharpNote.Services;
 
 namespace SharpNote
 {
@@ -61,6 +62,7 @@ namespace SharpNote
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //builder.RegisterModule(new UserModule());
+            builder.RegisterType<NoteService>().As<INoteService>().SingleInstance();
         }
 
         // Configure is where you add middleware. This is called after
