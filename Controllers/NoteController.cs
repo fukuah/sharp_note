@@ -16,6 +16,11 @@ namespace SharpNote.Controllers
     {
         private UnitOfWork _unitOfWork;
 
+        public NoteController ()
+        {
+            _unitOfWork = new UnitOfWork();
+        }
+
         /// <summary>
         /// Gets note by ID.
         /// </summary>
@@ -24,15 +29,12 @@ namespace SharpNote.Controllers
         [HttpGet("{id}")]
         public ApiResponse Get(int id)
         {
-            _unitOfWork = new UnitOfWork();
             try { 
                 Note note = _unitOfWork.Notes.Get(id);
-                _unitOfWork.Dispose();
                 return new ApiResponse<Note>(note);
             }
             catch (Exception e)
             {
-                _unitOfWork.Dispose();
                 return new ApiResponse<string>("Server exception has occured performing request.", new ApiError(e));
             }
         }
@@ -45,18 +47,14 @@ namespace SharpNote.Controllers
         [HttpPost]
         public ApiResponse Add([FromBody] Note note)
         {
-            _unitOfWork = new UnitOfWork();
             try
             {
                 
                 _unitOfWork.Notes.Create(note);
-                _unitOfWork.Save();
-                _unitOfWork.Dispose();
             }
             catch (Exception e)
             {
-                _unitOfWork.Dispose();
-                return new ApiResponse<string>("Server exception has occured performing request.", new ApiError(e));
+                return new ApiResponse<Note>(null, new ApiError(e));
             }
 
             return new ApiResponse<Note>(note);
@@ -72,16 +70,12 @@ namespace SharpNote.Controllers
         {
             try
             {
-                _unitOfWork = new UnitOfWork();
                 _unitOfWork.Notes.Update(note);
-                _unitOfWork.Save();
-                _unitOfWork.Dispose();
                 return new ApiResponse<Note>(note);
             }
             catch (Exception e)
             {
-                _unitOfWork.Dispose();
-                return new ApiResponse<string>("Server exception has occured performing request.", new ApiError(e));
+                return new ApiResponse<Note>(null, new ApiError(e));
             }
         }
 
@@ -93,18 +87,14 @@ namespace SharpNote.Controllers
         [HttpDelete("{id}")]
         public ApiResponse Delete(int id)
         {
-            _unitOfWork = new UnitOfWork();
             try
             {
                 _unitOfWork.Notes.Delete(id);
-                _unitOfWork.Save();
-                _unitOfWork.Dispose();
                 return new ApiResponse<string>("Note[" + id + "] was deleted.");
             }
             catch (Exception e)
             {
-                _unitOfWork.Dispose();
-                return new ApiResponse<string>("Server exception has occured performing request.", new ApiError(e));
+                return new ApiResponse<string>(null, new ApiError(e));
             }
         }
     }

@@ -17,75 +17,101 @@ namespace SharpNote.UOW
 
     public class NoteRepository : IRepository<Note>
     {
-        private NoteDbContext db;
-
-        public NoteRepository(NoteDbContext context)
-        {
-            this.db = context;
-        }
 
         public IEnumerable<Note> GetAll()
         {
-            return db.Notes;
+            using (var db = new NoteDbContext())
+            {
+                return db.Notes;
+            }
         }
 
         public Note Get(int id)
         {
-            return db.Notes.Find(id);
+            using (var db = new NoteDbContext())
+            {
+                return db.Notes.Find(id);
+            }
         }
 
         public void Create(Note note)
         {
-            db.Notes.Add(note);
+            using (var db = new NoteDbContext())
+            {
+                db.Notes.Add(note);
+                db.SaveChanges();
+            }
         }
 
         public void Update(Note note)
         {
-            db.Entry(note).State = EntityState.Modified;
+            using (var db = new NoteDbContext())
+            {
+                db.Entry(note).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         public void Delete(int id)
         {
-            Note note = db.Notes.Find(id);
-            if (note != null)
-                db.Notes.Remove(note);
+            using (var db = new NoteDbContext())
+            {
+                Note note = db.Notes.Find(id);
+                if (note != null)
+                {
+                    db.Notes.Remove(note);
+                    db.SaveChanges();
+                }
+            }
         }
     }
 
     public class UserRepository : IRepository<User>
     {
-        private NoteDbContext db;
-
-        public UserRepository(NoteDbContext context)
-        {
-            this.db = context;
-        }
-
         public IEnumerable<User> GetAll()
         {
-            return db.Users.Include(o => o.Notes);
+            using (var db = new NoteDbContext())
+            {
+                return db.Users.Include(o => o.Notes);
+            }
         }
 
         public User Get(int id)
         {
-            return db.Users.Find(id);
+            using (var db = new NoteDbContext())
+            {
+                return db.Users.Find(id);
+            }
         }
 
         public void Create(User user)
         {
-            db.Users.Add(user);
+            using (var db = new NoteDbContext())
+            {
+                db.Users.Add(user);
+            }
         }
 
         public void Update(User user)
         {
-            db.Entry(user).State = EntityState.Modified;
+            using (var db = new NoteDbContext())
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         public void Delete(int id)
         {
-            User user = db.Users.Find(id);
-            if (user != null)
-                db.Users.Remove(user);
+            using (var db = new NoteDbContext())
+            {
+                User user = db.Users.Find(id);
+                if (user != null)
+                {
+                    db.Users.Remove(user);
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }
