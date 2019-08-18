@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using SharpNote.AppDbContext.Entities;
 using SharpNote.AppDbContext;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace SharpNote.UOW
 {
@@ -20,10 +22,13 @@ namespace SharpNote.UOW
 
         public IEnumerable<Note> GetAll()
         {
+            var notes = new List<Note>();
             using (var db = new NoteDbContext())
             {
-                return db.Notes;
+                notes.AddRange(db.Notes);
             }
+
+            return notes;
         }
 
         public Note Get(int id)
@@ -64,16 +69,29 @@ namespace SharpNote.UOW
                 }
             }
         }
+
+        public IEnumerable<Note> GetSelection(int offset, int size)
+        {
+            var notes = new List<Note>();
+            using (var db = new NoteDbContext())
+            {
+                notes.AddRange(db.Notes.OrderBy(p => p.CreatedAt).Skip(offset).Take(size).ToList());
+            }
+
+            return notes;
+        }
     }
 
     public class UserRepository : IRepository<User>
     {
         public IEnumerable<User> GetAll()
         {
+            var users = new List<User>();
             using (var db = new NoteDbContext())
             {
-                return db.Users.Include(o => o.Notes);
+                users.AddRange(db.Users.Include(o => o.Notes));
             }
+            return users;
         }
 
         public User Get(int id)

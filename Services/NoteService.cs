@@ -43,6 +43,18 @@ namespace SharpNote.Services
             _uniteOfWork.Notes.Update(contextNote);
         }
 
+        public IEnumerable<ViewModels.Note> GetSelection(int offset, int size)
+        {
+            var notes = _uniteOfWork.Notes.GetSelection(offset, size);
+            var noteModels = new List<ViewModels.Note>();
+            foreach (var note in notes)
+            {
+                noteModels.Add(ViewModelMapper.MapContextNote(note));
+            }
+
+            return noteModels;
+        }
+
         private ViewModels.Note GetNoteIfAvailable(AppDbContext.Entities.Note note)
         {
             if (note?.AppearAt.HasValue ?? false)

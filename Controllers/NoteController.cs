@@ -93,5 +93,25 @@ namespace SharpNote.Controllers
                 return new ApiResponse<string>(null, new ApiError(e));
             }
         }
+
+        /// <summary>
+        /// Gets notes using offset and size given.
+        /// </summary>
+        /// <param name="offset">Offset for note request.</param>
+        /// <param name="size">Size for note request.</param>
+        /// <returns>Array of Note objects.</returns>
+        [HttpGet("{offset}/{size}")]
+        public ApiResponse GetBunch(int offset, int size)
+        {
+            try
+            {
+                var notes = _noteService.GetSelection(offset, size);
+                return new ApiResponse<Note []>(notes.ToArray());
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse<Note []>(new Note [0], new ApiError(e));
+            }
+        }
     }
 }

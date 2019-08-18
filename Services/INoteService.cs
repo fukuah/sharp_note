@@ -14,5 +14,7 @@ namespace SharpNote.Services
         void Create(ViewModels.Note note);
 
         void Update(ViewModels.Note note);
+
+        IEnumerable<ViewModels.Note> GetSelection(int offset, int size);
     }
 }

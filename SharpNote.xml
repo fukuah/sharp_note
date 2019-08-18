@@ -32,5 +32,13 @@
             <param name="id">ID of the note to be deleted.</param>
             <returns>String message.</returns>
         </member>
+        <member name="M:SharpNote.Controllers.NoteController.GetBunch(System.Int32,System.Int32)">
+            <summary>
+            Gets note by ID.
+            </summary>
+            <param name="offset">Offset for note request.</param>
+            <param name="size">Size for note request.</param>
+            <returns>Array of Note objects.</returns>
+        </member>
     </members>
 </doc>
