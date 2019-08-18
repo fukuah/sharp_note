@@ -45,11 +45,11 @@ namespace SharpNote.Services
 
         private ViewModels.Note GetNoteIfAvailable(AppDbContext.Entities.Note note)
         {
-            if (note.AppearAt.HasValue)
+            if (note?.AppearAt.HasValue ?? false)
             {
                 if (DateTime.Compare(DateTime.Now, note.AppearAt.GetValueOrDefault()) > 0)
                 {
-                    if (note.ExpireAt.HasValue)
+                    if (note?.ExpireAt.HasValue ?? false)
                     {
                         if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
                         {
@@ -62,7 +62,7 @@ namespace SharpNote.Services
                     }
                 }
             }
-            else if (note.ExpireAt.HasValue)
+            else if (note?.ExpireAt.HasValue ?? false)
             {
                 if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
                 {

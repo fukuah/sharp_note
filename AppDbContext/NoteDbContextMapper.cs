@@ -19,8 +19,6 @@ namespace SharpNote.AppDbContext
                 Header = note.Header ?? null,
                 Link = note.Link ?? null,
                 Content = note.Content ?? null,
-                CreatedAt = note.CreatedAt ?? null,
-                UpdatedAt = note.UpdatedAt ?? null,
                 AppearAt = note.AppearAt ?? null,
                 ExpireAt = note.ExpireAt ?? null
             };

@@ -14,12 +14,11 @@ namespace SharpNote.ViewModels
 
             return new Note
             {
-                Username = (note.Creator != null) ? note.Creator.Username : null,
+                Username = note.Creator?.Username,
                 Header = note.Header ?? null,
                 Link = note.Link ?? null,
                 Content = note.Content ?? null,
                 CreatedAt = note.CreatedAt ?? null,
-                UpdatedAt = note.UpdatedAt ?? null,
                 AppearAt = note.AppearAt ?? null,
                 ExpireAt = note.ExpireAt ?? null
             };

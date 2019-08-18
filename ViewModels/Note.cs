@@ -13,8 +13,6 @@ namespace SharpNote.ViewModels
         public string Username { get; set; }
 
         public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-
         public DateTime? AppearAt { get; set; }
         public DateTime? ExpireAt { get; set; }
     }
