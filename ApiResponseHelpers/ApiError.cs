@@ -9,6 +9,7 @@ namespace SharpNote.ApiResponseHelpers
     public enum ApiErrorCode{
         UNKNOWN_ERROR = 0,
         DATA_WAS_MODIFIED_OR_DELETED = 1,
+        UNAUTHORIZED = 2,
     }
 
     public class ApiError
@@ -23,6 +24,10 @@ namespace SharpNote.ApiResponseHelpers
                 case "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException":
                     Message = e.Message;
                     Code = ApiErrorCode.DATA_WAS_MODIFIED_OR_DELETED;
+                    break;
+                case "UnauthorizedAccessException":
+                    Message = e.Message;
+                    Code = ApiErrorCode.UNAUTHORIZED;
                     break;
                 default:
                     Message = e.Message;

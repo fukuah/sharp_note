@@ -15,10 +15,12 @@ namespace SharpNote.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserService service)
+        public UserController(IUserService userService, IAuthService authService)
         {
-            _userService = service;
+            _userService = userService;
+            _authService = authService;
         }
 
         /// <summary>
@@ -30,13 +32,17 @@ namespace SharpNote.Controllers
         public ApiResponse GetByUsername(string username)
         {
             var info = _userService.GetByUsername(username);
-            return new ApiResponse<UserInfo>(info.ToModel());
+            return new ApiResponse<UserInfoModel>(info.ToModel());
         }
 
         [HttpPost("login")]
         public ApiResponse Login([FromBody] LoginForm form)
         {
-            return new ApiResponse<string>(_userService.GetToken(form));
+           if (_userService.UserExists(form))
+            {
+                return new ApiResponse<string>(_authService.GenerateToken(form.Username));
+            }
+            return new ApiResponse<string>("", new ApiError(new UnauthorizedAccessException()));
         }
 
         [HttpPost("register")]

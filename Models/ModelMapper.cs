@@ -7,12 +7,12 @@ namespace SharpNote.Models
 {
     public static class ModelMapper
     {
-        public static Note ToModel(this Kernel.NoteKernel note)
+        public static NoteModel ToModel(this Kernel.NoteKernel note)
         {
             if (note == null)
                 return null;
 
-            return new Note
+            return new NoteModel
             {
                 Username = note.Creator?.Username,
                 Header = note.Header ?? null,
@@ -24,12 +24,12 @@ namespace SharpNote.Models
             };
         }
 
-        public static UserInfo ToModel(this Kernel.UserInfoKernel user)
+        public static UserInfoModel ToModel(this Kernel.UserInfoKernel user)
         {
             if (user == null)
                 return null;
 
-            var userInfo =  new UserInfo
+            var userInfo = new UserInfoModel
             {
                 Username = user.Username,
                 Notes = user.Notes.Select(x => x.ToModel()).ToList()
@@ -43,7 +43,7 @@ namespace SharpNote.Models
             return userInfo;
         }
 
-        public static Kernel.NoteKernel ToKernel(this Note note)
+        public static Kernel.NoteKernel ToKernel(this NoteModel note)
         {
             if (note == null)
                 return null;
@@ -60,7 +60,7 @@ namespace SharpNote.Models
         }
 
 
-        public static Kernel.UserInfoKernel ToKernel(this UserInfo user)
+        public static Kernel.UserInfoKernel ToKernel(this UserInfoModel user)
         {
             if (user == null)
                 return null;

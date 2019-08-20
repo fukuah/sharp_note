@@ -15,14 +15,11 @@ namespace SharpNote.Services
 {
     public class UserService : IUserService
     {
-
         private UnitOfWork _unitOfWork;
-        private readonly IAuthService _authService;
             
         public UserService(IAuthService authService)
         {
             _unitOfWork = new UnitOfWork();
-            _authService = authService;
         }
 
         public Kernel.UserInfoKernel GetByUsername(string username)
@@ -31,7 +28,7 @@ namespace SharpNote.Services
             return user.ToKernel();
         }
 
-        public void Create(UserInfo user)
+        public void Create(UserInfoModel user)
         {
             throw new NotImplementedException();    
         }
@@ -41,17 +38,17 @@ namespace SharpNote.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<UserInfo> GetSelection(int offset, int size)
+        public IEnumerable<UserInfoModel> GetSelection(int offset, int size)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(UserInfo user)
+        public void Update(UserInfoModel user)
         {
             throw new NotImplementedException();
         }
 
-        public string GetToken(LoginForm form)
+        public bool UserExists(LoginForm form)
         {
             var user = _unitOfWork.Users.Get(form.Username);
             // Convert to Base64String for comparison
@@ -59,11 +56,13 @@ namespace SharpNote.Services
             var userHash = System.Convert.ToBase64String(user?.PasswordHash ?? new byte[0]);
             if (userHash.Equals(formHash))
             {
-                return _authService.GenerateToken(form.Username);
+                return true;
             }
 
-            return "";
+            return false;
         }
+
+
 
         public void Register(RegistrationForm form)
         {

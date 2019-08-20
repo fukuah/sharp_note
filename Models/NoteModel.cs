@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SharpNote.Models
 {
-    public class Note
+    public class NoteModel
     {
         public string Header { get; set; }
         public string Content { get; set; }

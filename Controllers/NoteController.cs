@@ -34,8 +34,8 @@ namespace SharpNote.Controllers
         public ApiResponse Get(int id)
         {
             
-            Note note = _noteService.Get(id).ToModel();
-            return new ApiResponse<Note>(note);
+            NoteModel note = _noteService.Get(id).ToModel();
+            return new ApiResponse<NoteModel>(note);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SharpNote.Controllers
         /// <param name="note">Note entity.</param>
         /// <returns>Note object which was added.</returns>
         [HttpPost]
-        public ApiResponse Add([FromBody] Note note)
+        public ApiResponse Add([FromBody] NoteModel note)
         {
             try
             {
@@ -53,10 +53,10 @@ namespace SharpNote.Controllers
             }
             catch (Exception e)
             {
-                return new ApiResponse<Note>(null, new ApiError(e));
+                return new ApiResponse<NoteModel>(null, new ApiError(e));
             }
 
-            return new ApiResponse<Note>(note);
+            return new ApiResponse<NoteModel>(note);
         }
 
         /// <summary>
@@ -65,16 +65,16 @@ namespace SharpNote.Controllers
         /// <param name="note">Note entity.</param>
         /// <returns>Note object to be updated, id is required.</returns>
         [HttpPut]
-        public ApiResponse Update([FromBody] Note note)
+        public ApiResponse Update([FromBody] NoteModel note)
         {
             try
             {
                 _noteService.Update(note.ToKernel());
-                return new ApiResponse<Note>(note);
+                return new ApiResponse<NoteModel>(note);
             }
             catch (Exception e)
             {
-                return new ApiResponse<Note>(null, new ApiError(e));
+                return new ApiResponse<NoteModel>(null, new ApiError(e));
             }
         }
 
@@ -106,11 +106,11 @@ namespace SharpNote.Controllers
         public ApiResponse GetPage(int number)
         {
             int count = _noteService.Count();
-            var page = new Pagination<Models.Note>(number, count);
+            var page = new Pagination<Models.NoteModel>(number, count);
             var notes = _noteService.GetPage(number, page.Size);
             page.Content = notes.Select(x => x.ToModel()).ToList();
 
-            return new ApiResponse<Pagination<Note>>(page);
+            return new ApiResponse<Pagination<NoteModel>>(page);
          
         }
     }

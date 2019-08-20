@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace SharpNote.Models
 {
-    public class UserInfo
+    public class UserInfoModel
     {
         public string Username { get; set; }
-        public ICollection<Note> Notes { get; set; }
+        public ICollection<NoteModel> Notes { get; set; }
 
         public DateTime? CreatedAt { get; set; }
     }

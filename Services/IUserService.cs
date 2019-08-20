@@ -12,13 +12,13 @@ namespace SharpNote.Services
 
         void Delete(int noteID);
 
-        void Create(Models.UserInfo user);
+        void Create(Models.UserInfoModel user);
 
-        void Update(Models.UserInfo user);
+        void Update(Models.UserInfoModel user);
 
-        IEnumerable<Models.UserInfo> GetSelection(int offset, int size);
+        IEnumerable<Models.UserInfoModel> GetSelection(int offset, int size);
 
-        string GetToken(LoginForm form);
+        bool UserExists(LoginForm form);
 
         void Register(Models.RegistrationForm form);
     }
