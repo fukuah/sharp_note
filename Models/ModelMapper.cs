@@ -32,13 +32,8 @@ namespace SharpNote.Models
             var userInfo = new UserInfoModel
             {
                 Username = user.Username,
-                Notes = user.Notes.Select(x => x.ToModel()).ToList()
+                Notes = user.Notes?.Select(x => x.ToModel()).ToList()
             };
-
-            foreach (var note in user.Notes)
-            {
-                userInfo.Notes.Add(ToModel(note));
-            }
 
             return userInfo;
         }
@@ -68,7 +63,7 @@ namespace SharpNote.Models
             var userInfo = new Kernel.UserInfoKernel
             {
                 Username = user.Username,
-                Notes = user.Notes.Select(x => x.ToKernel()).ToList()
+                Notes = user.Notes?.Select(x => x.ToKernel()).ToList()
             };
 
             return userInfo;

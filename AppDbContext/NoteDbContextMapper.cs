@@ -33,7 +33,7 @@ namespace SharpNote.AppDbContext
             {
                 Username = user.Username,
                 Friends = user.Friends?.Select(x => x.ToKernel().ToUserKernel()).ToList(),
-                Notes = user.Notes.Select(x => x.ToKernel()).ToList(),
+                Notes = user.Notes?.Select(x => x.ToKernel()).ToList(),
                 CreatedAt = user.CreatedAt
             };
         }
