@@ -9,7 +9,7 @@ namespace SharpNote.AppDbContext
 {
     public static class NoteDbContextMapper
     {
-        public static Note MapViewModelToContextNote(ViewModels.Note note)
+        public static Note ToEntity(this Models.Note note)
         {
             if (note == null)
                 return null;

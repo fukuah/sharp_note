@@ -43,6 +43,7 @@ namespace SharpNote.UOW
         {
             using (var db = new NoteDbContext())
             {
+                note.CreatedAt = DateTime.Now;
                 db.Notes.Add(note);
                 db.SaveChanges();
             }
@@ -52,9 +53,21 @@ namespace SharpNote.UOW
         {
             using (var db = new NoteDbContext())
             {
+                note.UpdatedAt = DateTime.Now;
                 db.Entry(note).State = EntityState.Modified;
                 db.SaveChanges();
             }
+        }
+
+        internal int Count()
+        {
+            int count;
+            using (var db = new NoteDbContext())
+            {
+                count = db.Notes.Count();
+            }
+
+            return count;
         }
 
         public void Delete(int id)
@@ -102,10 +115,19 @@ namespace SharpNote.UOW
             }
         }
 
+        public User Get(string username)
+        {
+            using (var db = new NoteDbContext())
+            {
+                return db.Users.Where(u => u.Username == username).FirstOrDefault<User>();
+            }
+        }
+
         public void Create(User user)
         {
             using (var db = new NoteDbContext())
             {
+                user.CreatedAt = DateTime.Now;
                 db.Users.Add(user);
             }
         }
@@ -114,6 +136,7 @@ namespace SharpNote.UOW
         {
             using (var db = new NoteDbContext())
             {
+                user.UpdatedAt = DateTime.Now;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
             }

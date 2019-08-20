@@ -11,14 +11,14 @@
             <param name="id">ID of the note to be sent.</param>
             <returns>Note object.</returns>
         </member>
-        <member name="M:SharpNote.Controllers.NoteController.Add(SharpNote.ViewModels.Note)">
+        <member name="M:SharpNote.Controllers.NoteController.Add(SharpNote.Models.Note)">
             <summary>
             Store new note.
             </summary>
             <param name="note">Note entity.</param>
             <returns>Note object which was added.</returns>
         </member>
-        <member name="M:SharpNote.Controllers.NoteController.Update(SharpNote.ViewModels.Note)">
+        <member name="M:SharpNote.Controllers.NoteController.Update(SharpNote.Models.Note)">
             <summary>
             Updates existing note.
             </summary>
@@ -32,13 +32,19 @@
             <param name="id">ID of the note to be deleted.</param>
             <returns>String message.</returns>
         </member>
-        <member name="M:SharpNote.Controllers.NoteController.GetBunch(System.Int32,System.Int32)">
+        <member name="M:SharpNote.Controllers.NoteController.GetPage(System.Int32)">
             <summary>
-            Gets note by ID.
+            Gets page of notes.
             </summary>
-            <param name="offset">Offset for note request.</param>
-            <param name="size">Size for note request.</param>
+            <param name="number">Page number.</param>
             <returns>Array of Note objects.</returns>
+        </member>
+        <member name="M:SharpNote.Controllers.UserController.GetByUsername(System.String)">
+            <summary>
+            Gets user information by username.
+            </summary>
+            <param name="username">Username of the user.</param>
+            <returns>UserInfo object.</returns>
         </member>
     </members>
 </doc>

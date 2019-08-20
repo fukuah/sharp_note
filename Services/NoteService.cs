@@ -1,5 +1,5 @@
 ﻿using SharpNote.AppDbContext.Entities;
-using SharpNote.ViewModels;
+using SharpNote.Models;
 using SharpNote.UOW;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace SharpNote.Services
             _uniteOfWork = new UnitOfWork();
         }
 
-        public ViewModels.Note GetOne(int noteID)
+        public Models.Note Get(int noteID)
         {
             var note = _uniteOfWork.Notes.Get(noteID);
             return GetNoteIfAvailable(note);
@@ -30,32 +30,32 @@ namespace SharpNote.Services
             _uniteOfWork.Notes.Delete(noteID);
         }
 
-        public void Create(ViewModels.Note note)
+        public void Create(Models.Note note)
         {
-            var contextNote = NoteDbContextMapper.MapViewModelToContextNote(note);
+            var contextNote = note.ToEntity();
             _uniteOfWork.Notes.Create(contextNote);
 
         }
 
-        public void Update(ViewModels.Note note)
+        public void Update(Models.Note note)
         {
-            var contextNote = NoteDbContextMapper.MapViewModelToContextNote(note);
+            var contextNote = note.ToEntity();
             _uniteOfWork.Notes.Update(contextNote);
         }
 
-        public IEnumerable<ViewModels.Note> GetSelection(int offset, int size)
+        public Pagination<Models.Note> GetPage(int pageNumber)
         {
-            var notes = _uniteOfWork.Notes.GetSelection(offset, size);
-            var noteModels = new List<ViewModels.Note>();
-            foreach (var note in notes)
-            {
-                noteModels.Add(ViewModelMapper.MapContextNote(note));
-            }
+            int noteCount = _uniteOfWork.Notes.Count();
+            var page = new Pagination<Models.Note>(pageNumber, noteCount);
 
-            return noteModels;
+            var notes = _uniteOfWork.Notes.GetSelection(page.Size * (page.Number - 1), page.Size);
+            if (notes.Count() > 0)
+                page.Content.AddRange(notes.ToModelList());
+
+            return page;
         }
 
-        private ViewModels.Note GetNoteIfAvailable(AppDbContext.Entities.Note note)
+        private Models.Note GetNoteIfAvailable(AppDbContext.Entities.Note note)
         {
             if (note?.AppearAt.HasValue ?? false)
             {
@@ -65,12 +65,12 @@ namespace SharpNote.Services
                     {
                         if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
                         {
-                            return ViewModelMapper.MapContextNote(note);
+                            return note.ToModel();
                         }
                     }
                     else
                     {
-                        return ViewModelMapper.MapContextNote(note);
+                        return note.ToModel();
                     }
                 }
             }
@@ -78,12 +78,12 @@ namespace SharpNote.Services
             {
                 if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
                 {
-                    return ViewModelMapper.MapContextNote(note);
+                    return note.ToModel();
                 }
             } 
             else
             {
-                return ViewModelMapper.MapContextNote(note);
+                return note.ToModel();
             }
 
             return null;

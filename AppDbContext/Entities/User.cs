@@ -9,10 +9,13 @@ namespace SharpNote.AppDbContext.Entities
     public class User
     {
         [Key]
-        public int UserID { get; set; }
+        public int Id { get; set; }
         [Required, MaxLength(100)]
         public string Username { get; set; }
+        [Required, MaxLength(100)]
+        public string Password { get; set; }
         public ICollection<Note> Notes { get; set; }
+        public ICollection<User> Friends { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

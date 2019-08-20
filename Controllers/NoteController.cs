@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharpNote.ApiResponseHelpers;
-using SharpNote.ViewModels;
+using SharpNote.Models;
 using SharpNote.Services;
 using SharpNote.UOW;
 
@@ -31,7 +31,7 @@ namespace SharpNote.Controllers
         public ApiResponse Get(int id)
         {
             
-            Note note = _noteService.GetOne(id);
+            Note note = _noteService.Get(id);
             return new ApiResponse<Note>(note);
         }
 
@@ -95,23 +95,16 @@ namespace SharpNote.Controllers
         }
 
         /// <summary>
-        /// Gets notes using offset and size given.
+        /// Gets page of notes.
         /// </summary>
-        /// <param name="offset">Offset for note request.</param>
-        /// <param name="size">Size for note request.</param>
+        /// <param name="number">Page number.</param>
         /// <returns>Array of Note objects.</returns>
-        [HttpGet("{offset}/{size}")]
-        public ApiResponse GetBunch(int offset, int size)
+        [HttpGet("page/{number}")]
+        public ApiResponse GetPage(int number)
         {
-            try
-            {
-                var notes = _noteService.GetSelection(offset, size);
-                return new ApiResponse<Note []>(notes.ToArray());
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse<Note []>(new Note [0], new ApiError(e));
-            }
+                var notes = _noteService.GetPage(number);
+                return new ApiResponse<Pagination<Note>>(notes);
+         
         }
     }
 }

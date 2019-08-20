@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpNote.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,14 +8,14 @@ namespace SharpNote.Services
 {
     public interface INoteService
     {
-        ViewModels.Note GetOne(int noteID);
+        Models.Note Get(int noteID);
 
         void Delete(int noteID);
 
-        void Create(ViewModels.Note note);
+        void Create(Models.Note note);
 
-        void Update(ViewModels.Note note);
+        void Update(Models.Note note);
 
-        IEnumerable<ViewModels.Note> GetSelection(int offset, int size);
+        Pagination<Models.Note> GetPage(int number);
     }
 }

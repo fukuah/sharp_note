@@ -9,7 +9,7 @@ namespace SharpNote.AppDbContext.Entities
     public class Note
     {
         [Key]
-        public int NoteID { get; set; }
+        public int Id { get; set; }
         [Required, MaxLength(200)]
         public string Header { get; set; }
         [Required]

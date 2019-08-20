@@ -41,6 +41,7 @@ namespace SharpNote
             // any IServiceProvider or the ConfigureContainer method
             // won't get called.
             services.AddMvc();
+            //services.AddAuthentication().AddCookie();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -63,6 +64,7 @@ namespace SharpNote
         {
             //builder.RegisterModule(new UserModule());
             builder.RegisterType<NoteService>().As<INoteService>().SingleInstance();
+            builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         }
 
         // Configure is where you add middleware. This is called after
