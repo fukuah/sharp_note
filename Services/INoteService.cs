@@ -8,14 +8,16 @@ namespace SharpNote.Services
 {
     public interface INoteService
     {
-        Models.Note Get(int noteID);
+        Kernel.NoteKernel Get(int noteID);
 
         void Delete(int noteID);
 
-        void Create(Models.Note note);
+        void Create(Kernel.NoteKernel note);
 
-        void Update(Models.Note note);
+        void Update(Kernel.NoteKernel note);
 
-        Pagination<Models.Note> GetPage(int number);
+        List<Kernel.NoteKernel> GetPage(int number, int size);
+
+        int Count();
     }
 }

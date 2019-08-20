@@ -30,7 +30,7 @@ namespace SharpNote.Controllers
         public ApiResponse GetByUsername(string username)
         {
             var info = _userService.GetByUsername(username);
-            return new ApiResponse<UserInfo>(info);
+            return new ApiResponse<UserInfo>(info.ToModel());
         }
 
         [HttpPost("login")]

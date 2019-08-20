@@ -30,10 +30,11 @@ namespace SharpNote.Controllers
         /// <param name="id">ID of the note to be sent.</param>
         /// <returns>Note object.</returns>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ApiResponse Get(int id)
         {
             
-            Note note = _noteService.Get(id);
+            Note note = _noteService.Get(id).ToModel();
             return new ApiResponse<Note>(note);
         }
 
@@ -48,7 +49,7 @@ namespace SharpNote.Controllers
             try
             {
 
-                _noteService.Create(note);
+                _noteService.Create(note.ToKernel());
             }
             catch (Exception e)
             {
@@ -68,7 +69,7 @@ namespace SharpNote.Controllers
         {
             try
             {
-                _noteService.Update(note);
+                _noteService.Update(note.ToKernel());
                 return new ApiResponse<Note>(note);
             }
             catch (Exception e)
@@ -104,8 +105,12 @@ namespace SharpNote.Controllers
         [HttpGet("page/{number}")]
         public ApiResponse GetPage(int number)
         {
-                var notes = _noteService.GetPage(number);
-                return new ApiResponse<Pagination<Note>>(notes);
+            int count = _noteService.Count();
+            var page = new Pagination<Models.Note>(number, count);
+            var notes = _noteService.GetPage(number, page.Size);
+            page.Content = notes.Select(x => x.ToModel()).ToList();
+
+            return new ApiResponse<Pagination<Note>>(page);
          
         }
     }

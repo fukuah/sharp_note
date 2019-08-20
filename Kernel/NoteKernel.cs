@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
-namespace SharpNote.AppDbContext.Entities
+namespace SharpNote.Kernel
 {
-    public class Note
+    public class NoteKernel
     {
-        [Key]
-        public int Id { get; set; }
-        [Required, MaxLength(200)]
         public string Header { get; set; }
-        [Required]
         public string Content { get; set; }
         public string Link { get; set; }
-        public User Creator { get; set; }
-        //public ICollection<User> Permissions { get; set; }
+        public UserKernel Creator { get; set; }
+        public List<UserKernel> Permissions;
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

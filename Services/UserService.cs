@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using SharpNote.AppDbContext;
 
 namespace SharpNote.Services
 {
@@ -24,10 +25,10 @@ namespace SharpNote.Services
             _authService = authService;
         }
 
-        public Models.UserInfo GetByUsername(string username)
+        public Kernel.UserInfoKernel GetByUsername(string username)
         {
             var user = _unitOfWork.Users.Get(username);
-            return ModelMapper.ToModel(user);
+            return user.ToKernel();
         }
 
         public void Create(UserInfo user)

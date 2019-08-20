@@ -8,7 +8,7 @@ namespace SharpNote.Services
 {
     public interface IUserService
     {
-        Models.UserInfo GetByUsername(string username);
+        Kernel.UserInfoKernel GetByUsername(string username);
 
         void Delete(int noteID);
 

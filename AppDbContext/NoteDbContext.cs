@@ -35,6 +35,10 @@ namespace SharpNote.AppDbContext
         {
             modelBuilder.Entity<Note>().ToTable("Note");
             modelBuilder.Entity<User>().ToTable("User");
+
+            modelBuilder.Entity<User>().HasMany<Note>();
+            modelBuilder.Entity<Note>().HasMany<User>();
+            modelBuilder.Entity<User>().HasMany<User>();
         }
     }
 }
