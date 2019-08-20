@@ -18,7 +18,8 @@ namespace SharpNote.Services
 
         IEnumerable<Models.UserInfo> GetSelection(int offset, int size);
 
-        void Login(Models.LoginForm form);
+        string GetToken(LoginForm form);
 
+        void Register(Models.RegistrationForm form);
     }
 }

@@ -6,23 +6,28 @@ using System.Threading.Tasks;
 using SharpNote.UOW;
 using SharpNote.Models;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SharpNote.Services
 {
     public class UserService : IUserService
     {
 
-        private UnitOfWork _uniteOfWork;
-
-        public UserService()
+        private UnitOfWork _unitOfWork;
+        private readonly IAuthService _authService;
+            
+        public UserService(IAuthService authService)
         {
-            _uniteOfWork = new UnitOfWork();
+            _unitOfWork = new UnitOfWork();
+            _authService = authService;
         }
 
         public Models.UserInfo GetByUsername(string username)
         {
-            var user = _uniteOfWork.Users.Get(username);
-            return ViewModelMapper.ToModel(user);
+            var user = _unitOfWork.Users.Get(username);
+            return ModelMapper.ToModel(user);
         }
 
         public void Create(UserInfo user)
@@ -45,13 +50,36 @@ namespace SharpNote.Services
             throw new NotImplementedException();
         }
 
-        public void Login(LoginForm form)
+        public string GetToken(LoginForm form)
         {
-            var user = _uniteOfWork.Users.Get(form.Username);
-            if (user?.Password.Equals(form.Password) ?? false)
+            var user = _unitOfWork.Users.Get(form.Username);
+            // Convert to Base64String for comparison
+            var formHash = System.Convert.ToBase64String(this.getPasswordHash(form.Password));
+            var userHash = System.Convert.ToBase64String(user?.PasswordHash ?? new byte[0]);
+            if (userHash.Equals(formHash))
             {
-                // DO LOGIN
+                return _authService.GenerateToken(form.Username);
             }
+
+            return "";
+        }
+
+        public void Register(RegistrationForm form)
+        {
+            var user = new AppDbContext.Entities.User
+            {
+                Username = form.Username,
+                PasswordHash = getPasswordHash(form.Password)
+            };
+
+            _unitOfWork.Users.Create(user);
+        }
+
+        private byte [] getPasswordHash(string password)
+        {
+            SHA1 sha = new SHA1CryptoServiceProvider();
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            return sha.ComputeHash(passwordBytes);
         }
     }
 }

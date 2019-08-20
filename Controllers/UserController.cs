@@ -33,10 +33,18 @@ namespace SharpNote.Controllers
             return new ApiResponse<UserInfo>(info);
         }
 
-        [HttpPost]
-        public void Login([FromBody] LoginForm form)
+        [HttpPost("login")]
+        public ApiResponse Login([FromBody] LoginForm form)
         {
-            _userService.Login(form);
+            return new ApiResponse<string>(_userService.GetToken(form));
+        }
+
+        [HttpPost("register")]
+        public ApiResponse Register([FromBody] RegistrationForm form)
+        {
+            _userService.Register(form);
+
+            return new ApiResponse();
         }
     }
 }

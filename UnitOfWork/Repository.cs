@@ -129,6 +129,7 @@ namespace SharpNote.UOW
             {
                 user.CreatedAt = DateTime.Now;
                 db.Users.Add(user);
+                db.SaveChanges();
             }
         }
 

@@ -15,6 +15,9 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.IO;
 using SharpNote.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SharpNote
 {
@@ -41,7 +44,23 @@ namespace SharpNote
             // any IServiceProvider or the ConfigureContainer method
             // won't get called.
             services.AddMvc();
-            //services.AddAuthentication().AddCookie();
+            string securityToken = "Yes__indeed. It_is_called_Lothric__where_the_transitory_lands_of_the_Lords_of_Cinder_converge.";
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityToken));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "fukuah",
+                        ValidAudience = "readers",
+                        IssuerSigningKey = symmetricSecurityKey
+                    };
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -64,6 +83,7 @@ namespace SharpNote
         {
             //builder.RegisterModule(new UserModule());
             builder.RegisterType<NoteService>().As<INoteService>().SingleInstance();
+            builder.RegisterType<AuthService>().As<IAuthService>().SingleInstance();
             builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         }
 
@@ -74,6 +94,7 @@ namespace SharpNote
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseAuthentication();
             app.UseMvc()
                 .UseSwagger()
                 .UseSwaggerUI(c =>

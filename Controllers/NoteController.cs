@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharpNote.ApiResponseHelpers;
@@ -12,6 +13,7 @@ using SharpNote.UOW;
 namespace SharpNote.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class NoteController : ControllerBase
     {

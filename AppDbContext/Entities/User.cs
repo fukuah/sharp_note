@@ -13,7 +13,7 @@ namespace SharpNote.AppDbContext.Entities
         [Required, MaxLength(100)]
         public string Username { get; set; }
         [Required, MaxLength(100)]
-        public string Password { get; set; }
+        public byte [] PasswordHash { get; set; }
         public ICollection<Note> Notes { get; set; }
         public ICollection<User> Friends { get; set; }
 
