@@ -19,61 +19,52 @@ namespace SharpNote.UOW
         public IEnumerable<User> GetAll()
         {
             var users = new List<User>();
-            using (var db = new NoteDbContext())
-            {
-                users.AddRange(db.Users.Include(o => o.Notes));
-            }
+            users.AddRange(_context.Users.Include(o => o.Notes));
             return users;
         }
 
         public User Get(int id)
         {
-            using (var db = new NoteDbContext())
-            {
-                return db.Users.Find(id);
-            }
+
+            return _context.Users.Find(id);
+
 
         }
 
         public User Get(string username)
         {
-            using (var db = new NoteDbContext())
-            {
-                return db.Users.Where(u => u.Username == username).FirstOrDefault<User>();
-            }
+
+            return _context.Users.Where(u => u.Username == username).FirstOrDefault<User>();
+
         }
 
         public void Create(User user)
         {
-            using (var db = new NoteDbContext())
-            {
-                user.CreatedAt = DateTime.Now;
-                db.Users.Add(user);
-                db.SaveChanges();
-            }
+
+            user.CreatedAt = DateTime.Now;
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
         }
 
         public void Update(User user)
         {
-            using (var db = new NoteDbContext())
-            {
-                user.UpdatedAt = DateTime.Now;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+
+            user.UpdatedAt = DateTime.Now;
+            _context.Entry(user).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            using (var db = new NoteDbContext())
+
+            User user = _context.Users.Find(id);
+            if (user != null)
             {
-                User user = db.Users.Find(id);
-                if (user != null)
-                {
-                    db.Users.Remove(user);
-                    db.SaveChanges();
-                }
+                _context.Users.Remove(user);
+                _context.SaveChanges();
             }
+
         }
     }
 }

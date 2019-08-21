@@ -19,75 +19,58 @@ namespace SharpNote.UOW
         public IEnumerable<Note> GetAll()
         {
             var notes = new List<Note>();
-            using (var db = new NoteDbContext())
-            {
-                notes.AddRange(db.Notes);
-            }
 
+            notes.AddRange(_context.Notes);
             return notes;
         }
 
         public Note Get(int id)
         {
-            using (var db = new NoteDbContext())
-            {
-                return db.Notes.Find(id);
-            }
+            return _context.Notes.Find(id);
         }
 
         public void Create(Note note)
         {
-            using (var db = new NoteDbContext())
-            {
-                note.CreatedAt = DateTime.Now;
-                db.Notes.Add(note);
-                db.SaveChanges();
-            }
+            note.CreatedAt = DateTime.Now;
+            _context.Notes.Add(note);
+            _context.SaveChanges();
         }
 
         public void Update(Note note)
         {
-            using (var db = new NoteDbContext())
-            {
-                note.UpdatedAt = DateTime.Now;
-                db.Entry(note).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            note.UpdatedAt = DateTime.Now;
+            _context.Entry(note).State = EntityState.Modified;
+            _context.SaveChanges();
+
         }
 
         internal int Count()
         {
-            int count;
-            using (var db = new NoteDbContext())
-            {
-                count = db.Notes.Count();
-            }
+            int count = _context.Notes.Count();
+
 
             return count;
         }
 
         public void Delete(int id)
         {
-            using (var db = new NoteDbContext())
+            Note note = _context.Notes.Find(id);
+            if (note != null)
             {
-                Note note = db.Notes.Find(id);
-                if (note != null)
-                {
-                    db.Notes.Remove(note);
-                    db.SaveChanges();
-                }
+                _context.Notes.Remove(note);
+                _context.SaveChanges();
             }
+
         }
 
         public IEnumerable<Note> GetSelection(int offset, int size)
         {
             var notes = new List<Note>();
-            using (var db = new NoteDbContext())
-            {
-                notes.AddRange(db.Notes.OrderBy(p => p.CreatedAt).Skip(offset).Take(size).ToList());
-            }
+
+            notes.AddRange(_context.Notes.OrderBy(p => p.CreatedAt).Skip(offset).Take(size).ToList());
 
             return notes;
+
         }
     }
 }
