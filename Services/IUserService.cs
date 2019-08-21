@@ -1,4 +1,5 @@
-﻿using SharpNote.Models;
+﻿using SharpNote.Kernel;
+using SharpNote.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,18 @@ namespace SharpNote.Services
 {
     public interface IUserService
     {
-        Kernel.UserInfoKernel GetByUsername(string username);
+        UserInfoKernel GetByUsername(string username);
 
         void Delete(int noteID);
 
-        void Create(Models.UserInfoModel user);
+        void Create(UserInfoKernel user);
 
-        void Update(Models.UserInfoModel user);
+        void Update(UserInfoKernel user);
 
-        IEnumerable<Models.UserInfoModel> GetSelection(int offset, int size);
+        IEnumerable<UserInfoKernel> GetSelection(int offset, int size);
 
-        bool UserExists(LoginForm form);
+        bool UserExists(string username, string password);
 
-        void Register(Models.RegistrationForm form);
+        void Register(string username, string password);
     }
 }

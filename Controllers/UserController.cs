@@ -36,9 +36,9 @@ namespace SharpNote.Controllers
         }
 
         [HttpPost("login")]
-        public ApiResponse Login([FromBody] LoginForm form)
+        public ApiResponse Login([FromBody] LoginFormModel form)
         {
-           if (_userService.UserExists(form))
+           if (_userService.UserExists(form.Username, form.Password))
             {
                 return new ApiResponse<string>(_authService.GenerateToken(form.Username));
             }
@@ -46,9 +46,9 @@ namespace SharpNote.Controllers
         }
 
         [HttpPost("register")]
-        public ApiResponse Register([FromBody] RegistrationForm form)
+        public ApiResponse Register([FromBody] RegistrationFormModel form)
         {
-            _userService.Register(form);
+            _userService.Register(form.Username, form.Password);
 
             return new ApiResponse();
         }

@@ -21,8 +21,9 @@ namespace SharpNote.Services
             {
                 note = uow.Notes.Get(noteID);
             }
+            NoteKernel noteKernel = note?.ToKernel();
 
-            return GetNoteIfAvailable(note);
+            return (noteKernel?.IsAvailible() ?? false) ? noteKernel : null;
         }
 
         public void Delete(int noteID)
@@ -68,40 +69,6 @@ namespace SharpNote.Services
                 count = uow.Notes.Count();
             }
             return count;
-        }
-
-        private NoteKernel GetNoteIfAvailable(Note note)
-        {
-            if (note?.AppearAt.HasValue ?? false)
-            {
-                if (DateTime.Compare(DateTime.Now, note.AppearAt.GetValueOrDefault()) > 0)
-                {
-                    if (note?.ExpireAt.HasValue ?? false)
-                    {
-                        if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
-                        {
-                            return note.ToKernel();
-                        }
-                    }
-                    else
-                    {
-                        return note.ToKernel();
-                    }
-                }
-            }
-            else if (note?.ExpireAt.HasValue ?? false)
-            {
-                if (DateTime.Compare(note.ExpireAt.GetValueOrDefault(), DateTime.Now) > 0)
-                {
-                    return note.ToKernel();
-                }
-            }
-            else
-            {
-                return note.ToKernel();
-            }
-
-            return null;
         }
     }
 }

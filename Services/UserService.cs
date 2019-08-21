@@ -27,7 +27,7 @@ namespace SharpNote.Services
             return user?.ToKernel();
         }
 
-        public void Create(UserInfoModel user)
+        public void Create(UserInfoKernel user)
         {
             throw new NotImplementedException();    
         }
@@ -37,25 +37,25 @@ namespace SharpNote.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<UserInfoModel> GetSelection(int offset, int size)
+        public IEnumerable<UserInfoKernel> GetSelection(int offset, int size)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(UserInfoModel user)
+        public void Update(UserInfoKernel user)
         {
             throw new NotImplementedException();
         }
 
-        public bool UserExists(LoginFormModel form)
+        public bool UserExists(string username, string password)
         {
             User user;
             using (var uow = new UnitOfWork())
             {
-                user = uow.Users.Get(form.Username);
+                user = uow.Users.Get(username);
             }
             // Convert to Base64String for comparison
-            var formHash = System.Convert.ToBase64String(this.GetPasswordHash(form.Password));
+            var formHash = System.Convert.ToBase64String(this.GetPasswordHash(password));
             var userHash = System.Convert.ToBase64String(user?.PasswordHash ?? new byte[0]);
             if (userHash.Equals(formHash))
             {
@@ -67,12 +67,12 @@ namespace SharpNote.Services
 
 
 
-        public void Register(RegistrationFormModel form)
+        public void Register(string username, string password)
         {
             var user = new User
             {
-                Username = form.Username,
-                PasswordHash = GetPasswordHash(form.Password)
+                Username = username,
+                PasswordHash = GetPasswordHash(password)
             };
             using (var uow = new UnitOfWork())
             {
