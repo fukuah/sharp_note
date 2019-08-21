@@ -29,7 +29,10 @@ namespace SharpNote.Services
         public void Delete(int noteID)
         {
             using (var uow = new UnitOfWork())
+            {
                 uow.Notes.Delete(noteID);
+                uow.SaveChanges();
+            }
         }
 
         public void Create(NoteKernel note)
@@ -38,6 +41,7 @@ namespace SharpNote.Services
             using (var uow = new UnitOfWork())
             {
                 uow.Notes.Create(contextNote);
+                uow.SaveChanges();
             }
         }
 
@@ -47,6 +51,7 @@ namespace SharpNote.Services
             using (var uow = new UnitOfWork())
             {
                 uow.Notes.Update(contextNote);
+                uow.SaveChanges();
             }
         }
 

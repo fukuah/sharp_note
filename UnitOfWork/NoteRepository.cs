@@ -33,15 +33,12 @@ namespace SharpNote.UOW
         {
             note.CreatedAt = DateTime.Now;
             _context.Notes.Add(note);
-            _context.SaveChanges();
         }
 
         public void Update(Note note)
         {
             note.UpdatedAt = DateTime.Now;
             _context.Entry(note).State = EntityState.Modified;
-            _context.SaveChanges();
-
         }
 
         internal int Count()
@@ -58,7 +55,6 @@ namespace SharpNote.UOW
             if (note != null)
             {
                 _context.Notes.Remove(note);
-                _context.SaveChanges();
             }
 
         }

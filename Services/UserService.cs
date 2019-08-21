@@ -65,8 +65,6 @@ namespace SharpNote.Services
             return false;
         }
 
-
-
         public void Register(string username, string password)
         {
             var user = new User
@@ -77,6 +75,7 @@ namespace SharpNote.Services
             using (var uow = new UnitOfWork())
             {
                 uow.Users.Create(user);
+                uow.SaveChanges();
             }
         }
 
