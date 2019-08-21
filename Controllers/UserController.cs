@@ -42,7 +42,7 @@ namespace SharpNote.Controllers
             {
                 return new ApiResponse<string>(_authService.GenerateToken(form.Username));
             }
-            return new ApiResponse<string>("", new ApiError(new UnauthorizedAccessException()));
+            return new ApiResponse<string>(null, "Invalid username or password.");
         }
 
         [HttpPost("register")]

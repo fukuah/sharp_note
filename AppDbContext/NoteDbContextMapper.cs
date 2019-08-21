@@ -16,11 +16,11 @@ namespace SharpNote.AppDbContext
 
             return new Note
             {
-                Header = note.Header ?? null,
-                Link = note.Link ?? null,
-                Content = note.Content ?? null,
-                AppearAt = note.AppearAt ?? null,
-                ExpireAt = note.ExpireAt ?? null,
+                Header = note.Header ,
+                Link = note.Link ,
+                Content = note.Content ,
+                AppearAt = note.AppearAt ,
+                ExpireAt = note.ExpireAt ,
             };
         }
 
@@ -45,11 +45,11 @@ namespace SharpNote.AppDbContext
 
             return new Kernel.NoteKernel
             {
-                Header = note.Header ?? null,
-                Link = note.Link ?? null,
-                Content = note.Content ?? null,
-                AppearAt = note.AppearAt ?? null,
-                ExpireAt = note.ExpireAt ?? null,
+                Header = note.Header ,
+                Link = note.Link ,
+                Content = note.Content ,
+                AppearAt = note.AppearAt ,
+                ExpireAt = note.ExpireAt ,
                 //Permissions = note.Permissions.Select(x => x.ToKernel().ToUserKernel()).ToList()
             };
         }

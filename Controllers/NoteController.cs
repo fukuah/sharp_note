@@ -19,7 +19,7 @@ namespace SharpNote.Controllers
     {
         private readonly INoteService _noteService;
 
-        public NoteController (INoteService service)
+        public NoteController(INoteService service)
         {
             _noteService = service;
         }
@@ -33,7 +33,6 @@ namespace SharpNote.Controllers
         [AllowAnonymous]
         public ApiResponse Get(int id)
         {
-            
             NoteModel note = _noteService.Get(id).ToModel();
             return new ApiResponse<NoteModel>(note);
         }
@@ -46,16 +45,7 @@ namespace SharpNote.Controllers
         [HttpPost]
         public ApiResponse Add([FromBody] NoteModel note)
         {
-            try
-            {
-
-                _noteService.Create(note.ToKernel());
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse<NoteModel>(null, new ApiError(e));
-            }
-
+            _noteService.Create(note.ToKernel());
             return new ApiResponse<NoteModel>(note);
         }
 
@@ -67,15 +57,8 @@ namespace SharpNote.Controllers
         [HttpPut]
         public ApiResponse Update([FromBody] NoteModel note)
         {
-            try
-            {
-                _noteService.Update(note.ToKernel());
-                return new ApiResponse<NoteModel>(note);
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse<NoteModel>(null, new ApiError(e));
-            }
+            _noteService.Update(note.ToKernel());
+            return new ApiResponse<NoteModel>(note);
         }
 
         /// <summary>
@@ -86,15 +69,8 @@ namespace SharpNote.Controllers
         [HttpDelete("{id}")]
         public ApiResponse Delete(int id)
         {
-            try
-            {
-                _noteService.Delete(id);
-                return new ApiResponse<string>("Note[" + id + "] was deleted.");
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse<string>(null, new ApiError(e));
-            }
+            _noteService.Delete(id);
+            return new ApiResponse<string>("Note[" + id + "] was deleted.");
         }
 
         /// <summary>
@@ -111,7 +87,7 @@ namespace SharpNote.Controllers
             page.Content = notes.Select(x => x.ToModel()).ToList();
 
             return new ApiResponse<PaginationModel<NoteModel>>(page);
-         
+
         }
     }
 }

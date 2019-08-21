@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpNote.Models
 {
-    public class RegistrationForm
+    public class RegistrationFormModel
     {
         [Required(ErrorMessage = "Username was not provided.")]
         public string Username { get; set; }
