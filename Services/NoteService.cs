@@ -6,55 +6,71 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SharpNote.AppDbContext;
+using SharpNote.Kernel;
 
 namespace SharpNote.Services
 {
 
     public class NoteService : INoteService
     {
-        private UnitOfWork _uniteOfWork;
 
-        public NoteService()
+        public NoteKernel Get(int noteID)
         {
-            _uniteOfWork = new UnitOfWork();
-        }
+            Note note;
+            using (var uow = new UnitOfWork())
+            {
+                note = uow.Notes.Get(noteID);
+            }
 
-        public Kernel.NoteKernel Get(int noteID)
-        {
-            var note = _uniteOfWork.Notes.Get(noteID);
             return GetNoteIfAvailable(note);
         }
 
         public void Delete(int noteID)
         {
-            _uniteOfWork.Notes.Delete(noteID);
+            using (var uow = new UnitOfWork())
+                uow.Notes.Delete(noteID);
         }
 
-        public void Create(Kernel.NoteKernel note)
+        public void Create(NoteKernel note)
         {
             var contextNote = note.ToEntity();
-            _uniteOfWork.Notes.Create(contextNote);
+            using (var uow = new UnitOfWork())
+            {
+                uow.Notes.Create(contextNote);
+            }
         }
 
-        public void Update(Kernel.NoteKernel note)
+        public void Update(NoteKernel note)
         {
             var contextNote = note.ToEntity();
-            _uniteOfWork.Notes.Update(contextNote);
+            using (var uow = new UnitOfWork())
+            {
+                uow.Notes.Update(contextNote);
+            }
         }
 
-        public List<Kernel.NoteKernel> GetPage(int number, int size)
+        public List<NoteKernel> GetPage(int number, int size)
         {
-            var notes = _uniteOfWork.Notes.GetSelection(size * (number - 1), size);
-
-            return notes.Select(x => x.ToKernel()).ToList();
+            IEnumerable<Note> notes;
+            using (var uow = new UnitOfWork())
+            {
+                notes = uow.Notes.GetSelection(size * (number - 1), size);
+            }
+            return notes?.Select(x => x.ToKernel()).ToList();
         }
+
 
         public int Count()
         {
-            return _uniteOfWork.Notes.Count();
+            int count;
+            using (var uow = new UnitOfWork())
+            {
+                count = uow.Notes.Count();
+            }
+            return count;
         }
 
-        private Kernel.NoteKernel GetNoteIfAvailable(AppDbContext.Entities.Note note)
+        private NoteKernel GetNoteIfAvailable(Note note)
         {
             if (note?.AppearAt.HasValue ?? false)
             {
@@ -79,7 +95,7 @@ namespace SharpNote.Services
                 {
                     return note.ToKernel();
                 }
-            } 
+            }
             else
             {
                 return note.ToKernel();

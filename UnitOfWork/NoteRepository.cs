@@ -8,17 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SharpNote.UOW
 {
-    interface IRepository<T> where T : class
-    {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        void Create(T item);
-        void Update(T item);
-        void Delete(int id);
-    }
-
     public class NoteRepository : IRepository<Note>
     {
+        private readonly NoteDbContext _context;
+        public NoteRepository(NoteDbContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Note> GetAll()
         {
@@ -92,68 +88,6 @@ namespace SharpNote.UOW
             }
 
             return notes;
-        }
-    }
-
-    public class UserRepository : IRepository<User>
-    {
-        public IEnumerable<User> GetAll()
-        {
-            var users = new List<User>();
-            using (var db = new NoteDbContext())
-            {
-                users.AddRange(db.Users.Include(o => o.Notes));
-            }
-            return users;
-        }
-
-        public User Get(int id)
-        {
-            using (var db = new NoteDbContext())
-            {
-                return db.Users.Find(id);
-            }
-        }
-
-        public User Get(string username)
-        {
-            using (var db = new NoteDbContext())
-            {
-                return db.Users.Where(u => u.Username == username).FirstOrDefault<User>();
-            }
-        }
-
-        public void Create(User user)
-        {
-            using (var db = new NoteDbContext())
-            {
-                user.CreatedAt = DateTime.Now;
-                db.Users.Add(user);
-                db.SaveChanges();
-            }
-        }
-
-        public void Update(User user)
-        {
-            using (var db = new NoteDbContext())
-            {
-                user.UpdatedAt = DateTime.Now;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (var db = new NoteDbContext())
-            {
-                User user = db.Users.Find(id);
-                if (user != null)
-                {
-                    db.Users.Remove(user);
-                    db.SaveChanges();
-                }
-            }
         }
     }
 }

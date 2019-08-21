@@ -15,12 +15,12 @@ namespace SharpNote.Models
             return new NoteModel
             {
                 Username = note.Creator?.Username,
-                Header = note.Header ?? null,
-                Link = note.Link ?? null,
-                Content = note.Content ?? null,
-                CreatedAt = note.CreatedAt ?? null,
-                AppearAt = note.AppearAt ?? null,
-                ExpireAt = note.ExpireAt ?? null
+                Header = note.Header,
+                Link = note.Link,
+                Content = note.Content,
+                CreatedAt = note.CreatedAt,
+                AppearAt = note.AppearAt,
+                ExpireAt = note.ExpireAt
             };
         }
 
@@ -45,12 +45,12 @@ namespace SharpNote.Models
 
             return new Kernel.NoteKernel
             {
-                Header = note.Header ?? null,
-                Link = note.Link ?? null,
-                Content = note.Content ?? null,
-                CreatedAt = note.CreatedAt ?? null,
-                AppearAt = note.AppearAt ?? null,
-                ExpireAt = note.ExpireAt ?? null
+                Header = note.Header,
+                Link = note.Link,
+                Content = note.Content,
+                CreatedAt = note.CreatedAt,
+                AppearAt = note.AppearAt,
+                ExpireAt = note.ExpireAt
             };
         }
 

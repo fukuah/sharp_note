@@ -1,4 +1,5 @@
-﻿using SharpNote.Models;
+﻿using SharpNote.Kernel;
+using SharpNote.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,15 @@ namespace SharpNote.Services
 {
     public interface INoteService
     {
-        Kernel.NoteKernel Get(int noteID);
+        NoteKernel Get(int noteID);
 
         void Delete(int noteID);
 
-        void Create(Kernel.NoteKernel note);
+        void Create(NoteKernel note);
 
-        void Update(Kernel.NoteKernel note);
+        void Update(NoteKernel note);
 
-        List<Kernel.NoteKernel> GetPage(int number, int size);
+        List<NoteKernel> GetPage(int number, int size);
 
         int Count();
     }

@@ -106,11 +106,11 @@ namespace SharpNote.Controllers
         public ApiResponse GetPage(int number)
         {
             int count = _noteService.Count();
-            var page = new Pagination<Models.NoteModel>(number, count);
+            var page = new PaginationModel<NoteModel>(number, count);
             var notes = _noteService.GetPage(number, page.Size);
             page.Content = notes.Select(x => x.ToModel()).ToList();
 
-            return new ApiResponse<Pagination<NoteModel>>(page);
+            return new ApiResponse<PaginationModel<NoteModel>>(page);
          
         }
     }

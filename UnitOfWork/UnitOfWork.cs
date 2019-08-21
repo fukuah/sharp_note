@@ -7,29 +7,28 @@ using System.Threading.Tasks;
 
 namespace SharpNote.UOW
 {
-    public class UnitOfWork
+    public class UnitOfWork : IDisposable
     {
-        private UserRepository _userRepository;
-        private NoteRepository _noteRepository;
-
-        public UserRepository Users
+        private readonly NoteDbContext _context;
+        public UnitOfWork()
         {
-            get
-            {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository();
-                return _userRepository;
-            }
+            _context = new NoteDbContext();
+            Users = new UserRepository(_context);
+            Notes = new NoteRepository(_context);
         }
 
-        public NoteRepository Notes
+        public UserRepository Users { get; private set; }
+
+        public NoteRepository Notes { get; private set; }
+
+        public void Dispose()
         {
-            get
-            {
-                if (_noteRepository == null)
-                    _noteRepository = new NoteRepository();
-                return _noteRepository;
-            }
+            _context.Dispose();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }

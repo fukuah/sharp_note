@@ -10,22 +10,21 @@ using System.Security.Cryptography;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using SharpNote.AppDbContext;
+using SharpNote.Kernel;
+using SharpNote.AppDbContext.Entities;
 
 namespace SharpNote.Services
 {
     public class UserService : IUserService
     {
-        private UnitOfWork _unitOfWork;
-            
-        public UserService(IAuthService authService)
+        public UserInfoKernel GetByUsername(string username)
         {
-            _unitOfWork = new UnitOfWork();
-        }
-
-        public Kernel.UserInfoKernel GetByUsername(string username)
-        {
-            var user = _unitOfWork.Users.Get(username);
-            return user.ToKernel();
+            User user;
+            using (var uow = new UnitOfWork())
+            {
+                user = uow.Users.Get(username);
+            }
+            return user?.ToKernel();
         }
 
         public void Create(UserInfoModel user)
@@ -48,11 +47,15 @@ namespace SharpNote.Services
             throw new NotImplementedException();
         }
 
-        public bool UserExists(LoginForm form)
+        public bool UserExists(LoginFormModel form)
         {
-            var user = _unitOfWork.Users.Get(form.Username);
+            User user;
+            using (var uow = new UnitOfWork())
+            {
+                user = uow.Users.Get(form.Username);
+            }
             // Convert to Base64String for comparison
-            var formHash = System.Convert.ToBase64String(this.getPasswordHash(form.Password));
+            var formHash = System.Convert.ToBase64String(this.GetPasswordHash(form.Password));
             var userHash = System.Convert.ToBase64String(user?.PasswordHash ?? new byte[0]);
             if (userHash.Equals(formHash))
             {
@@ -64,18 +67,20 @@ namespace SharpNote.Services
 
 
 
-        public void Register(RegistrationForm form)
+        public void Register(RegistrationFormModel form)
         {
-            var user = new AppDbContext.Entities.User
+            var user = new User
             {
                 Username = form.Username,
-                PasswordHash = getPasswordHash(form.Password)
+                PasswordHash = GetPasswordHash(form.Password)
             };
-
-            _unitOfWork.Users.Create(user);
+            using (var uow = new UnitOfWork())
+            {
+                uow.Users.Create(user);
+            }
         }
 
-        private byte [] getPasswordHash(string password)
+        private byte [] GetPasswordHash(string password)
         {
             SHA1 sha = new SHA1CryptoServiceProvider();
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
