@@ -18,6 +18,7 @@ using SharpNote.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using SharpNote.Modules;
 
 namespace SharpNote
 {
@@ -81,10 +82,7 @@ namespace SharpNote
         // "Without ConfigureContainer" mechanism shown later.
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.RegisterModule(new UserModule());
-            builder.RegisterType<NoteService>().As<INoteService>().SingleInstance();
-            builder.RegisterType<AuthService>().As<IAuthService>().SingleInstance();
-            builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+            builder.RegisterModule(new BasicModule());
         }
 
         // Configure is where you add middleware. This is called after

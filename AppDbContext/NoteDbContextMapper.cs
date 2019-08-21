@@ -53,7 +53,5 @@ namespace SharpNote.AppDbContext
                 //Permissions = note.Permissions.Select(x => x.ToKernel().ToUserKernel()).ToList()
             };
         }
-
-        
     }
 }
