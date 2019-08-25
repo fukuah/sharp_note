@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SharpNote.Kernel
+namespace SharpNote.Models
 {
-    public class UserKernel : CommonKernel
+    public class EntityModel
     {
-        public string Username { get; set; }
+        public int Id { get; set; }
     }
 }

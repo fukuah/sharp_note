@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SharpNote.AppDbContext.Entities;
+using SharpNote.Kernel;
 
 
 namespace SharpNote.AppDbContext
 {
     public static class NoteDbContextMapper
     {
-        public static Note ToEntity(this Kernel.NoteKernel note)
+        public static Note ToEntity(this NoteKernel note)
         {
             if (note == null)
                 return null;
@@ -24,7 +25,7 @@ namespace SharpNote.AppDbContext
             };
         }
 
-        public static Kernel.UserInfoKernel ToKernel(this User user)
+        public static UserInfoKernel ToKernel(this User user)
         {
             if (user == null)
                 return null;
@@ -32,18 +33,18 @@ namespace SharpNote.AppDbContext
             return new Kernel.UserInfoKernel
             {
                 Username = user.Username,
-                Friends = user.Friends?.Select(x => x.ToKernel().ToUserKernel()).ToList(),
+                //Friends = user.Friends?.Select(x => x.ToKernel().ToUserKernel()).ToList(),
                 Notes = user.Notes?.Select(x => x.ToKernel()).ToList(),
                 CreatedAt = user.CreatedAt
             };
         }
 
-        public static Kernel.NoteKernel ToKernel(this Note note)
+        public static NoteKernel ToKernel(this Note note)
         {
             if (note == null)
                 return null;
 
-            return new Kernel.NoteKernel
+            return new NoteKernel
             {
                 Header = note.Header ,
                 Link = note.Link ,

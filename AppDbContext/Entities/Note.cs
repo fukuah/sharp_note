@@ -6,10 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharpNote.AppDbContext.Entities
 {
-    public class Note
+    public class Note : CommonEntity
     {
-        [Key]
-        public int Id { get; set; }
         [Required, MaxLength(200)]
         public string Header { get; set; }
         [Required]
@@ -17,9 +15,6 @@ namespace SharpNote.AppDbContext.Entities
         public string Link { get; set; }
         public User Creator { get; set; }
         //public ICollection<User> Permissions { get; set; }
-
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
 
         public DateTime? AppearAt { get; set; }
         public DateTime? ExpireAt { get; set; }

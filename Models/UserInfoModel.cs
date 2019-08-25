@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SharpNote.Models
 {
-    public class UserInfoModel
+    public class UserInfoModel : EntityModel
     {
         public string Username { get; set; }
         public ICollection<NoteModel> Notes { get; set; }

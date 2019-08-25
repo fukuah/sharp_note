@@ -6,18 +6,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharpNote.AppDbContext.Entities
 {
-    public class User
+    public class User : CommonEntity
     {
-        [Key]
-        public int Id { get; set; }
         [Required, MaxLength(100)]
         public string Username { get; set; }
         [Required, MaxLength(100)]
         public byte [] PasswordHash { get; set; }
         public ICollection<Note> Notes { get; set; }
-        public ICollection<User> Friends { get; set; }
-
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SharpNote.AppDbContext.Entities;
 
 namespace SharpNote.AppDbContext
 {
-    public class NoteDbContext : DbContext
+    public sealed class NoteDbContext : DbContext
     {
         public NoteDbContext()
         {
@@ -35,10 +36,8 @@ namespace SharpNote.AppDbContext
         {
             modelBuilder.Entity<Note>().ToTable("Note");
             modelBuilder.Entity<User>().ToTable("User");
-
-            modelBuilder.Entity<User>().HasMany<Note>();
-            modelBuilder.Entity<Note>().HasMany<User>();
-            modelBuilder.Entity<User>().HasMany<User>();
+            modelBuilder.Entity<Friendship>().ToTable("Friendship");
+            modelBuilder.Entity<NotePermission>().ToTable("NotePermission");
         }
     }
 }
